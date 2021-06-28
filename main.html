@@ -9,7 +9,39 @@
 </head>
 
 <body>
-
+    <script>
+        function player() {
+            let playerAnswer = prompt("Rock, Paper, Scissors?");
+            if (playerAnswer == "Rock" || playerAnswer == "Paper" || playerAnswer == "Scissors") {
+                console.log("Player choice: " + playerAnswer);
+                computerPlayer(playerAnswer);
+            }
+            else {
+                alert("Wrong answer, try again.")
+                player();
+            }
+        }
+        function computerPlayer(playerChoice) {
+            let answers = ["Rock", "Paper", "Scissors"];
+            let computerChoice = answers[Math.floor(Math.random() * 3)];
+            console.log("Computer choice: " + computerChoice);
+            whoWon(playerChoice, computerChoice);
+        }
+        function whoWon(playerChoice, computerChoice) {
+            if (playerChoice == computerChoice) {
+                console.log("Tie!");
+            }
+            else if ((playerChoice == "rock" && computerChoice == "paper") || (playerChoice == "paper" && computerChoice == "scissors") || (playerChoice == "scissors" && computerChoice == "rock")) {
+                console.log("You Lost!");
+            }
+            else if ((playerChoice == "rock" && computerChoice == "scissors") || (playerChoice == "paper" && computerChoice == "rock") || (playerChoice == "scissors" && computerChoice == "paper")) {
+                console.log("You Won!");
+            }
+            else {
+                console.log("The game is broken, RELOAD!")
+            }
+        }
+    </script>
 </body>
 
 </html>

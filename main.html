@@ -14,95 +14,144 @@
         <button id="paper">Paper</button>
         <button id="scissor">Scissor</button>
     </div>
-    <script>
-        // Function that starts the game and allows user to choose choice
-        function playerChoice(buttonClicked) {
-            if (buttonClicked == "rock" || buttonClicked == "paper" || buttonClicked == "scissor") {
-                console.log("Player choice: " + buttonClicked);
-                return buttonClicked;
-            }
-            else {
-                alert("Wrong answer, try again.")
-            }
-        }
-        // Function that makes the computer choose a random choice
-        function computerPlayer() {
-            let answers = ["rock", "paper", "scissor"];
-            let computerChoice = answers[Math.floor(Math.random() * 3)];
-            console.log("Computer choice: " + computerChoice);
-            return computerChoice;
-        }
-        // Function that anaylzes who won the game
-        function playRound(playerChoice, computerChoice) {
-            if (playerChoice == computerChoice) {
-                return 0;
-            }
-            else if ((playerChoice == "rock" && computerChoice == "scissor") || (playerChoice == "paper" && computerChoice == "rock") || (playerChoice == "scissor" && computerChoice == "paper")) {
-                return 1;
-            }
-            else if ((playerChoice == "rock" && computerChoice == "paper") || (playerChoice == "paper" && computerChoice == "scissor") || (playerChoice == "scissor" && computerChoice == "rock")) {
-                return 2;
-            }
-            else {
-                console.log("The game is broken, RELOAD!")
-            }
-        }
-        // Starting function that also counts up total score and displays who won the game.
-        function game(buttonClicked) {
-            let playerScore = 0;
-            let computerScore = 0;
-            let player = playerChoice(buttonClicked);
-            let computer = computerPlayer();
-            let gameWinner = playRound(player, computer);
+    <div id="textContainer">
 
-            if (gameWinner == 0) {
-                console.log("TIE");
-            }
-            else if (gameWinner == 1) {
-                console.log("WINNER");
-                playerScore++;
-            }
-            else if (gameWinner == 2) {
-                console.log("LOSER");
-                computerScore++
-            }
-
-            console.log("Player Score: " + playerScore);
-            console.log("Computer Score: " + computerScore);
-
-            if (playerScore > computerScore) {
-                console.log("You beat the Computer!!!");
-            }
-            else if (playerScore < computerScore) {
-                console.log("You lost against a Computer!!!")
-            }
-            else {
-                console.log("Game resulted in a TIE!!!")
-            }
-        }
-        //  selects container of buttons
-        const container = document.querySelector("#container");
-
-        //  creates node list for all the buttons
-        const buttonList = container.querySelectorAll("button");
-
-        buttonList.forEach((button) => {
-            button.addEventListener('click', () => {
-                if (button.id === "rock") {
-                    game("rock");
-                }
-                else if (button.id === "paper") {
-                    game("paper");
-                }
-                else if (button.id === "scissor") {
-                    game("scissor");
-                }
-                else {
-                    return;
-                }
-            });
-        });
-    </script>
+    </div>
 </body>
+<script>
+
+    // Function that starts the game and allows user to choose choice
+    function playerChoice(buttonClicked) {
+        if (buttonClicked == "rock" || buttonClicked == "paper" || buttonClicked == "scissor") {
+            console.log("Player choice: " + buttonClicked);
+            return buttonClicked;
+        }
+        else {
+            alert("Wrong answer, try again.");
+        }
+    }
+
+    // Function that makes the computer choose a random choice
+    function computerPlayer() {
+        let answers = ["rock", "paper", "scissor"];
+        let computerChoice = answers[Math.floor(Math.random() * 3)];
+        console.log(`Computer choice: ${computerChoice}`);
+        return computerChoice;
+    }
+
+    // Function that anaylzes who won the game
+    function playRound(playerChoice, computerChoice) {
+        if (playerChoice == computerChoice) {
+            return 0;
+        }
+        else if ((playerChoice == "rock" && computerChoice == "scissor") || (playerChoice == "paper" && computerChoice == "rock") || (playerChoice == "scissor" && computerChoice == "paper")) {
+            return 1;
+        }
+        else if ((playerChoice == "rock" && computerChoice == "paper") || (playerChoice == "paper" && computerChoice == "scissor") || (playerChoice == "scissor" && computerChoice == "rock")) {
+            return 2;
+        }
+        else {
+            console.log("The game is broken, RELOAD!")
+        }
+    }
+    // Starting function that also counts up total score and displays who won the game.
+    function game(buttonClicked) {
+        roundNum++;
+
+        //  creates h1 that shows round number
+        roundNumber.textContent = (`ROUND NUMBER: ${roundNum}`);
+        container.append(roundNumber);
+
+        //  assigns player var to the value that player chose
+        let player = playerChoice(buttonClicked);
+        //  creates div that shows player answer
+        playerAnswer.textContent = (`Player: ${player.charAt(0).toUpperCase() + player.slice(1)}!`);
+        container.append(playerAnswer);
+
+        //  assigns computer var to the random value chosen
+        let computer = computerPlayer();
+        //  creates div that shows computer answer
+        computerAnswer.textContent = (`Computer: ${computer.charAt(0).toUpperCase() + computer.slice(1)}!`);
+        container.append(computerAnswer);
+
+
+        //  assigns gameWinner var with the value correlating to who won the round
+        let gameWinner = playRound(player, computer);
+
+
+        if (gameWinner == 0) {
+            console.log("Tied Round.");
+        }
+
+        else if (gameWinner == 1) {
+            console.log("Won Round.");
+            playerScore++;
+
+            //  displays player current score
+            playerCurrentScore.textContent = (`Player Current Score: ${playerScore}`)
+            textContainer.append(playerCurrentScore);
+
+            if (playerScore === 5) {
+                gameDecision.textContext = ("You have won against the computer!");
+                textContainer.append(gameDecision);
+                alert("you won");
+            }
+        }
+        else if (gameWinner == 2) {
+            console.log("Loss Round.");
+            computerScore++
+
+            //  displays computer current score 
+            computerCurrentScore.textContent = (`Computer Current Score: ${computerScore}`)
+            textContainer.append(computerCurrentScore);
+
+            if (computerScore === 5) {
+                gameDecision.textContent = ("You have lost against the computer!");
+                textContainer.append(gameDecision);
+                alert("you lost");
+            }
+        }
+
+        console.log(playerScore);
+        console.log(computerScore);
+
+    }
+
+    let playerScore = 0;
+    let computerScore = 0;
+    let roundNum = 0;
+    //  selects container of buttons
+    const container = document.querySelector("#container");
+
+    //  creates node list for all the buttons
+    const buttonList = container.querySelectorAll("button");
+
+    const roundNumber = document.createElement("h2");
+    const playerAnswer = document.createElement("h4");
+    const computerAnswer = document.createElement("h4");
+    const playerCurrentScore = document.createElement("div");
+    const computerCurrentScore = document.createElement("div");
+    const gameDecision = document.createElement("div");
+
+    //  uses .forEach to iterate through buttonList node list
+    buttonList.forEach((button) => {
+
+        //  uses .addEventListener to register when a user clicks certain button
+        button.addEventListener("click", () => {
+            if (button.id === "rock") {
+                game("rock");
+            }
+            else if (button.id === "paper") {
+                game("paper");
+            }
+            else if (button.id === "scissor") {
+                game("scissor");
+            }
+            else {
+                return;
+            }
+        });
+    });
+</script>
 
 </html>
